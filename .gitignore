@@ -17,3 +17,5 @@ labs/7/out/production/cpsc2150.lab5/MultiSetApp.class
 labs/7/out/production/cpsc2150.lab5/SetAbs.class
 labs/7/out/test/cpsc2150.lab5/TestArraySet.class
 labs/7/out/test/cpsc2150.lab5/TestListSet.class
+.DS_Store
+HW3/.idea/workspace.xml

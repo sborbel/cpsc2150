@@ -1,7 +1,7 @@
 /**
  * Name: Sean Borbely
- * Class: CPSC2150 - HW2
- * Date: 2/25/19
+ * Class: CPSC2150 - HW3
+ * Date: 3/15/19
  *
  * Interface for GameBoard which represents a connect 4 game board. No space on the board can have multiple
  * players, and there can be a clear winner. Board is NUM_ROWS x NUM_COLS in size. Indexing of the gameboard
@@ -37,9 +37,66 @@ public interface IGameBoard {
         }
     }
 
+
+    /**
+     * Places a token after the player has chosen the next move
+     * @Pre-Condition p == [player's token] && 0 <= c <= cols && checkIfFree(c)
+     * @Post-condition Token is placed in the highest position in the column on top of any other tokens
+     * @param p Current player's token
+     * @param c Column value of the current turn
+     */
+    void placeToken(char p, int c);
+
+    /**
+     * Returns the value of the position in question
+     * @Precondition 0 <= r < rows && 0 <= c < cols
+     * @Postcondition Returns a space if position hasn't been filled, or the character's token who places a marker if it's taken
+     * @param r row value to be searched
+     * @param c column value to be searched
+     * @return Value at that position in the board
+     */
+    char whatsAtPos(int r, int c);
+
+    /**
+     * Checks if the last move resulted in a win diagonally, horizontally, or vertically
+     * @Precondition 0 <= c < cols
+     * @param c column of the last move
+     * @return True iff a win has resulted from the last move
+     */
+    default boolean checkForWin(int c){
+        int currRow = 0;
+        int currCol = c;
+        char currPlayer = whatsAtPos(currRow, currCol);
+        boolean notFound = true;
+        for(int i = 0; i < getNumRows() && notFound; i++){
+            if(whatsAtPos(i, c) != ' '){
+                currRow = i;
+                currCol = c;
+                currPlayer = whatsAtPos(currRow, currCol);
+                notFound = false;
+            }
+        }
+
+        if(checkDiagonalWin(currRow, currCol, currPlayer)){//Checks if there is a Diagonal win after last move
+            return true;
+        }
+
+        else if(checkHorizontalWin(currRow, currCol, currPlayer)){  //Checks if there is a Horizontal win after last move
+            return true;
+        }
+        else if(checkVerticalWin(currRow, currCol, currPlayer)){    //Checks if there is a Vertical win after last move
+            return true;
+        }
+        else{//Returns false if no win
+            return false;
+        }
+    }
+
     /**
      * @Precondition 0 <= r < rows && 0 <= c < cols && p == [current player's token]
      * @Precondition Marker has already been placed
+     * @Postcondition all possible positions around last position have been checked to
+     *                see if a win has resulted horizontally
      * @param r row value of the last move
      * @param c column value of the last move
      * @param p character's token to be searched for
@@ -79,6 +136,8 @@ public interface IGameBoard {
 
     /**
      * @Precondition 0 <= r < rows && 0 <= c < cols && p == [current player's token]
+     * @Postcondition all possible positions around last position have been checked to
+     *                see if a win has resulted vertically
      * @param r row value of the last move
      * @param c column value of the last move
      * @param p character's token to be searched for
@@ -116,6 +175,8 @@ public interface IGameBoard {
 
     /**
      * @Precondition 0 <= r < rows && 0 <= c < cols && p == [current player's token]
+     * @Postcondition all possible positions around last position have been checked to
+     *                see if a win has resulted diagonally
      * @param r row value of the last move
      * @param c column value of the last move
      * @param p character's token to be searched for
@@ -209,61 +270,6 @@ public interface IGameBoard {
 
 
     }
-
-    /**
-     * Places a token after the player has chosen the next move
-     * @Pre-Condition p == [player's token] && 0 <= c <= cols && checkIfFree(c)
-     * @Post-condition Token is placed in the highest position in the column on top of any other tokens
-     * @param p Current player's token
-     * @param c Column value of the current turn
-     */
-    void placeToken(char p, int c);
-
-    /**
-     * Returns the value of the position in question
-     * @Precondition 0 <= r < rows && 0 <= c < cols
-     * @Postcondition Returns a space if position hasn't been filled, or the character's token who places a marker if it's taken
-     * @param r row value to be searched
-     * @param c column value to be searched
-     * @return Value at that position in the board
-     */
-    char whatsAtPos(int r, int c);
-
-    /**
-     * Checks if the last move resulted in a win
-     * @Precondition 0 <= c < cols
-     * @param c column of the last move
-     * @return True iff a win has resulted from the last move
-     */
-    default boolean checkForWin(int c){
-        int currRow = 0;
-        int currCol = c;
-        char currPlayer = whatsAtPos(currRow, currCol);
-        boolean notFound = true;
-        for(int i = 0; i < getNumRows() && notFound; i++){
-            if(whatsAtPos(i, c) != ' '){
-                currRow = i;
-                currCol = c;
-                currPlayer = whatsAtPos(currRow, currCol);
-                notFound = false;
-            }
-        }
-
-        if(checkDiagonalWin(currRow, currCol, currPlayer)){//Checks if there is a Diagonal win after last move
-            return true;
-        }
-
-        else if(checkHorizontalWin(currRow, currCol, currPlayer)){  //Checks if there is a Horizontal win after last move
-            return true;
-        }
-        else if(checkVerticalWin(currRow, currCol, currPlayer)){    //Checks if there is a Vertical win after last move
-            return true;
-        }
-        else{//Returns false if no win
-            return false;
-        }
-    }
-
     /**
      * Returns Board in string representation for the user
      * @Precondition Columns < MAX_COLS
@@ -274,7 +280,8 @@ public interface IGameBoard {
 
     /**
      * Checks game for a tie
-     * @Precondition none
+     * @Precondition no moves have resulted in a win
+     * @Postcondition return true if the board is full
      * @return true iff all spots have been taken
      */
     boolean checkTie();

@@ -1,8 +1,9 @@
 /**
  * Name: Sean Borbely
- * Class: CPSC2150 - HW2
- * Date: 2/25/19
- * Invariant: board and positionStatus will update after each move to represent the spaces already taken up
+ * Class: CPSC2150 - HW3
+ * Date: 3/15/19
+ * Invariant: board and positionStatus will update after each move to represent the spaces already taken up.
+ *            Size of the board does not change.
  * Correspondence: r: rows, c: cols
  */
 
@@ -14,33 +15,8 @@ public class GameBoard extends AbsGameBoard implements IGameBoard{
     private int positionsToWin;
 
     /**
-     Default constructor for GameBoard
-     @Requires
-     @Ensures each space in board is filled with a blank space and positionStatus is created to be false in each position
-     @Param boardRows is the number of rows for the board
-     @Param boardCols is the number of columns in the board
-     @Param is the number of positions a player must get in a row to win
-
-     */
-    public GameBoard(){
-        rows = 6;
-        cols = 7;
-        positionsToWin = 4;
-        board = new char[rows][cols];
-        positionStatus = new boolean[rows][cols];
-
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < cols; j++){
-                board[i][j] = ' ';
-                positionStatus[i][j] = false;
-
-            }
-        }
-    }
-
-    /**
      Parameterized constructor for GameBoard
-     @Requires ("0 < boardRows < 10 && 0 < boardCols < 10" && inARow > 0)
+     @Requires (0 < boardRows < 10 && 0 < boardCols < 10 && inARow > 0)
      @Ensures each space in board is filled with a blank space
      @Param boardRows is the number of rows for the board
      @Param boardCols is the number of columns in the board
@@ -92,7 +68,6 @@ public class GameBoard extends AbsGameBoard implements IGameBoard{
             }
         }
         if(emptySpots == 0){
-            clearBoard();
             return true;
         }
         else{
@@ -101,19 +76,6 @@ public class GameBoard extends AbsGameBoard implements IGameBoard{
 
     }
 
-    /**
-     * Clears the board after game has ended by tie or winning move
-     * @Pre-condition game is finished, either by tie or win
-     * @Post-condition board is reset back to default state
-     */
-    private void clearBoard(){
-        for(int i = 0; i < rows; i++){
-            for(int j = 0; j < cols; j++){
-                board[i][j] = ' ';
-                positionStatus[i][j] = false;
-            }
-        }
-    }
 
     public int getNumRows(){
         return rows;

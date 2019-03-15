@@ -20,4 +20,3 @@ clean:
 	$(RM) *.class
 run: $ classes
 	$(JVM) $(MAIN)
-

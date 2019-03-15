@@ -1,8 +1,17 @@
+
 /**
- * AbsGameBoard provides a toString method to show the board to the players
+ * Name: Sean Borbely
+ * Class: CPSC2150 - HW3
+ * Date: 3/15/19
+ * AbsGameBoard provides a toString() for all implementations of IGameBoard
  */
 public abstract class AbsGameBoard implements IGameBoard{
 
+    /**
+     * @Precondition board is initialized
+     * @Postcondition returns a formatted string representation of the game board
+     * @return board in string representation
+     */
     @Override
     public String toString(){
         String boardOutline = "| "; //Column numbers

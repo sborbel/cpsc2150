@@ -2,8 +2,8 @@ import java.util.*;
 /**
  * Connect4Game starts the game and uses the functions in GameBoard to simulate a game of Connect 4
  * Name: Sean Borbely
- * Class: CPSC2150 - HW2
- * Date: 2/25/19
+ * Class: CPSC2150 - HW3
+ * Date: 3/15/19
  */
 
 public class Connect4Game {
